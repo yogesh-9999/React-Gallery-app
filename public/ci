@@ -1,0 +1,576 @@
+import React from 'react';
+import './CreativeInterests.css';
+import ListItem from './ListItem';
+import MyInterests from './MyInterests';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { interests } from './creativeInterestData';
+import SearchInput from '../Navbar/SearchInput.js';
+
+function CreativeInterest() {
+  const [searchField, setSearchField] = React.useState('');
+  const [filteredInterests, setFilteredInterests] = React.useState([]);
+  const [myInterests, setMyInterests] = React.useState('');
+  const [selected, setSelected] = React.useState('');
+  //to prevent the scroll of whole page.
+  React.useEffect(() => {
+    document.body.style.overflow = 'hidden';
+  }, []);
+  React.useEffect(() => {
+    const newFilteredInterests = interests.filter((interest) => {
+      return interest.toLocaleLowerCase().includes(searchField);
+    });
+    setFilteredInterests(newFilteredInterests);
+  }, [searchField]);
+  const onChangeHandler = (event) => {
+    const searchFieldString = event.target.value.toLocaleLowerCase();
+    setSearchField(searchFieldString);
+    // console.log(searchField);
+  };
+  return (
+    <div className="container">
+      <div className="popular-creativeInterests">
+        <div
+          style={{ margin: 'auto', paddingTop: '4rem', paddingRight: '10rem' }}
+        >
+          <SearchInput
+            data={{ type: 'text' }}
+            onChange={onChangeHandler}
+            showClose={false}
+            width="130%"
+            closeInput={null}
+          />
+        </div>
+        <h3 className="Heading">
+          {searchField ? 'Search Results' : 'Popular creative Interests'}
+        </h3>
+        <hr></hr>
+        <Scrollbars>
+          {filteredInterests.map((interest) => (
+            <div
+              onClick={() => {
+                setSelected([interest]);
+                setMyInterests([...myInterests, interest]);
+              }}
+            >
+              <ListItem name={interest} interests={interests} />
+            </div>
+          ))}
+        </Scrollbars>
+      </div>
+      {/* <Scrollbars> */}
+      <MyInterests myInterests={myInterests} />
+      {/* </Scrollbars> */}
+      {/* <div className="top-creativeInterests">
+        <i className="fa fa-user"></i> <h4>Vipul Dubey </h4>
+        <p>Robotics</p>
+        <h2>MY CREATIVE INTERESTS</h2>
+        <hr></hr>
+        {myInterests.map((element) => {
+          return (
+            <div className="choose-creative-interests">
+              <h2>{element}</h2>
+            </div>
+          );
+        })}
+        <button>Home</button>
+      </div> */}
+    </div>
+  );
+}
+
+export default CreativeInterest;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const interests = [
+    '3d animation',
+    '3d designing',
+    '3d modelling',
+    '3d origami',
+    '3d printed robot',
+    '3d printed rockets',
+    '3d printing',
+    '3d programming',
+    '3ds max',
+    '5 axis machining',
+    'A. I.',
+    'additive manufacturing',
+    'aeromodelling',
+    'aeronautics',
+    'aerospace models',
+    'agriculture',
+    'algebra',
+    'Alternative energy vehicles',
+    'aluminium casting',
+    'animation',
+    'animatronics',
+    'ansible',
+    'anthropomorphic robot',
+    'app development',
+    'aquaponics ',
+    'arduino',
+    'arduino origami',
+    'arduino robot',
+    'Artificial intelligence',
+    'astronomy',
+    'augmented reality',
+    'autodock',
+    'automation',
+    'automobile',
+    'Autonomous vehicles',
+    'aviation',
+    'battle bots',
+    'biogas plant',
+    'Biology',
+    'Biotechnology',
+    'blacksmith',
+    'boat building',
+    'Bots',
+    'brass casting',
+    'bronze casting',
+    'CAD',
+    'casting ',
+    'ceramics',
+    'chemistry',
+    'circuitpython',
+    'circuits',
+    'clay animatronics',
+    'claytronics',
+    'Clean energy',
+    'climate change',
+    'clockmaking',
+    'clockworks',
+    'cnc',
+    'cnc machining',
+    'coding',
+    'community conservation',
+    'composting',
+    'computer science',
+    'computer vision',
+    'Computers',
+    'control systems',
+    'copper casting',
+    'cosmos',
+    'cubelets',
+    'dash robot',
+    'data science',
+    'designing',
+    'dfrobot',
+    'die casting',
+    'digital art',
+    'disney animatronics',
+    'DIY',
+    'diy animatronics',
+    'diy bots',
+    'diy electrical',
+    'diy electronics',
+    'diy paper',
+    'diy planes',
+    'diy technology',
+    'diy toys',
+    'django',
+    'domino machine',
+    'drawable circuits',
+    'drones',
+    'e- vehicle',
+  ];
+
+  
+
+
+
+
+  import { Icon } from '@mui/material';
+import { color } from '@mui/system';
+import { FiAlertCircle } from 'react-icons/fi';
+
+const Validation = (values) => {
+  console.log(values);
+  let errors = {};
+
+  if (!values.password) {
+    errors.password = (
+      <p
+        className="team"
+        style={{
+          color: 'red',
+          marginTop: '-4%',
+          fontSize: '16px',
+          marginLeft: '-27%',
+        }}
+      >
+        <FiAlertCircle
+          style={{ margin: '1.5px', marginTop: '-0.7%' }}
+          size="16"
+        />{' '}
+        Please create a valid password.
+      </p>
+    );
+  } else if (values.password.length < 8) {
+    errors.password = (
+      <p
+        className="team"
+        style={{
+          color: 'red',
+          marginTop: '-4%',
+          fontSize: '16px',
+          marginLeft: '-27%',
+        }}
+      >
+        <FiAlertCircle
+          style={{ margin: '1.5px', marginTop: '-0.7%' }}
+          size="12"
+        />{' '}
+        Password must be atleast 8 characters.
+      </p>
+    );
+  } else if (
+    !(/[a-z]/.test(values.password) && /[A-Z]/.test(values.password))
+  ) {
+    errors.password = (
+      <p
+        className="team"
+        style={{
+          color: 'red',
+          marginTop: '-4%',
+          fontSize: '16px',
+          marginLeft: '-27%',
+        }}
+      >
+        <FiAlertCircle
+          style={{ margin: '1.5px', marginTop: '-0.7%' }}
+          size="12"
+        />{' '}
+        Password must have atleast 1 capital letter.
+      </p>
+    );
+  } else if (!/\d/.test(values.password)) {
+    errors.password = (
+      <p
+        className="team"
+        style={{
+          color: 'red',
+          marginTop: '-4%',
+          fontSize: '16px',
+          marginLeft: '-27%',
+        }}
+      >
+        <FiAlertCircle
+          style={{ margin: '1.5px', marginTop: '-0.7%' }}
+          size="12"
+        />{' '}
+        Password must have atleast 1 number.
+      </p>
+    );
+  } else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(values.password)) {
+    errors.password = (
+      <p
+        className="team"
+        style={{
+          color: 'red',
+          marginTop: '-4%',
+          fontSize: '16px',
+          marginLeft: '-27%',
+        }}
+      >
+        <FiAlertCircle
+          style={{ margin: '1.5px', marginTop: '-0.7%' }}
+          size="12"
+        />{' '}
+        Password must have atleast 1 special character.
+      </p>
+    );
+  } else {
+    errors.password = '';
+  }
+
+  return errors;
+};
+
+export default Validation;
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    background-color: #f9f9f9;
+  }
+  /* input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    display: none;
+  } */
+  /* .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  } */
+  
+  /* .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  } */
+  /* {
+    -ms-overflow-style: none;
+  } */
+  /* ::-webkit-scrollbar {
+    display: none;
+  } */
+  .container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    width: 100%;
+    height: 62rem;
+    border: none;
+    margin-left: 9.2%;
+    margin-top: 4%;
+  }
+  .popular-creativeInterests {
+    background-color: #ffff;
+    box-shadow: 2px 2px 10px rgba(91, 79, 79, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .Heading {
+    color: var(--color-gray-medium-2);
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+    margin-top: 4rem;
+    text-align: left;
+    margin-left: 5rem;
+    line-height: 0.5px;
+    /* margin: 0 auto;
+    margin-top: 2rem;
+    text-align: left;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    width: 90%; */
+  }
+  .popular-interests {
+    width: 90%;
+    background: #ececec;
+    margin: 0 auto;
+    border: 1px solid white;
+    border-radius: 10px;
+    margin-top: 1%;
+    height: 45px;
+  }
+  .popular-interests h2 {
+    color: gray;
+    /* margin-left: -80%; */
+    margin-top: -1.5%;
+    font-size: 15px;
+    text-align: left;
+    margin-left: 3%;
+  }
+  .check {
+    position: relative;
+    height: 21px;
+    width: 21px;
+    display: inline-block;
+    border-radius: 100%;
+    margin-right: 1.9rem;
+    background: #04e025;
+    padding: 2px;
+    /* animation: rotate 1.2s linear infinite; */
+  }
+  .check-icon {
+    content: '';
+    transform: scaleX(-1) rotate(135deg);
+    height: 14px;
+    width: 9px;
+    /* margin-right: 3rem; */
+    border-top: 3px solid #deebde;
+    border-right: 3px solid rgb(224, 246, 227);
+    border-radius: 3px;
+    transform-origin: left top;
+    margin-top: 0.9rem;
+    animation: check-icon 0.8s ease;
+  }
+  @keyframes check-icon {
+    0% {
+      height: 0;
+      width: 0;
+      opacity: 1;
+    }
+    20% {
+      height: 0;
+      width: 9px;
+      opacity: 1;
+    }
+    40% {
+      height: 14px;
+      width: 9px;
+      opacity: 1;
+    }
+    100% {
+      height: 14px;
+      width: 9px;
+      opacity: 1;
+    }
+  }
+  .interesticon i {
+    cursor: pointer;
+    margin-right: 1.3rem;
+    /* visibility: hidden; */
+  }
+  .top-creativeInterests {
+    background-color: #ffffff;
+    margin-left: 3%;
+    padding-top: 35px;
+    width: 80%;
+    box-shadow: 2px 2px 10px rgba(91, 79, 79, 0.2);
+    border-radius: 20px;
+  
+    height: 100%;
+  }
+  .top-creativeInterests-user {
+    display: flex;
+    align-items: center;
+  }
+  
+  .top-creativeInterests i {
+    margin-left: -58%;
+    border: 2px solid gray;
+    width: 19%;
+    height: 54px;
+    padding: 8px;
+    border-radius: 40px;
+    font-size: 25px;
+    margin-top: -5.5%;
+    background-color: #ccc;
+    color: lightslategray;
+  }
+  
+  .top-creativeInterests h4 {
+    margin-top: -11%;
+    margin-left: -2%;
+    color: gray;
+  }
+  
+  .top-creativeInterests p {
+    margin-top: -6%;
+    font-size: 12px;
+    margin-left: -2%;
+  }
+  .top-creativeInterests h2 {
+    font-size: 1.4rem;
+    color: var(--color-gray-medium-2);
+  
+    /* text-transform: uppercase; */
+    letter-spacing: 0.08rem;
+  }
+  
+  .choose-creative-interests {
+    border: 1px solid #dbdbdb;
+    width: 90%;
+    height: 45px;
+    margin-left: 5%;
+    border-radius: 10px;
+    margin-top: 3%;
+  }
+  
+  .choose-creative-interests h2 {
+    /* text-transform: lowercase; */
+    text-align: left;
+    font-size: 15px;
+    color: var(--color-gray-dark-2);
+    margin-left: 4%;
+    margin-top: -2.7%;
+  }
+  
+  .top-creativeInterests button {
+    cursor: none;
+    margin-top: 29rem;
+    margin-bottom: auto;
+    width: 90%;
+    background-color: rgb(182, 108, 108);
+    height: 45px;
+    border-radius: 7px;
+    position: sticky;
+    bottom: 0;
+  }
+  .homeButton {
+    cursor: pointer;
+    background-color: darkred;
+  }
+  /* .top-creativeInterests button:hover {
+    cursor: pointer;
+    background-color: darkred;
+  } */
+  
+  @media (min-width: 768px) {
+    .container {
+      display: grid;
+    }
+  }
+  
+
+
+
+
+
+  import React from 'react';
+
+// React Router necessary imports
+import { Routes, Route } from 'react-router-dom';
+
+// Stylesheet import
+import classes from './Entry.module.css';
+
+// SignIn component import
+import SignIn from './SignIn/SignIn';
+
+// SignUp component import
+import SignUp from './SignUp/SignUp';
+
+// message
+import Message from './Message';
+//signup2 component import
+import Signup2 from './Signup2';
+//new passwords poupup
+import Createnewpassword from './Createnewpassword';
+//upload profile picture
+import Uploadpic from './Uploadpic';
+//Creative Interst
+import CreativeInterest from './CreativeInterest';
+
+function Entry() {
+  return (
+    <Routes>
+      <Route path="/" element={<SignIn />} />
+      <Route path="/signUp" element={<SignUp />} />
+      <Route path="/message" element={<Message />} />
+      <Route path="/signup2" element={<Signup2 />} />
+      <Route path="/createpass" element={<Createnewpassword />} />
+      <Route path="/uploadpic" element={<Uploadpic />} />
+      <Route path="/creativeinterests" element={<CreativeInterest />} />
+    </Routes>
+  );
+}
+
+export default Entry;
